@@ -1,0 +1,37 @@
+1 // SELECT COUNT(*) AS nombre_etudiants FROM etudiants;
+2//SELECT nom, prenom, DATEDIFF(CURDATE(), date_naissance) AS age
+FROM etudiants;
+
+3// SELECT MAX(prix) AS plus_chere_formation, MIN(prix) AS moins_chere_formation
+FROM formations;
+ 
+ 4//SELECT e.nom, e.prenom, SUM(f.prix) AS total_a_payer
+FROM etudiants e
+JOIN inscriptions i ON e.id_etudiant = i.id_etudiant
+JOIN formations f ON i.id_formation = f.id_formation
+GROUP BY e.id_etudiant
+HAVING COUNT(DISTINCT i.id_formation) = (SELECT COUNT(*) FROM formations);
+
+
+5//SELECT s.nom_session, COUNT(DISTINCT i.id_etudiant) AS nombre_etudiants_inscrits
+FROM sessions s
+LEFT JOIN inscriptions i ON s.id_session = i.id_session
+GROUP BY s.id_session;
+
+6//  SELECT DISTINCT e.numero_CIN
+FROM etudiants e
+JOIN inscriptions i ON e.id_etudiant = i.id_etudiant;
+
+7//SELECT e.nom, e.prenom, COUNT(i.id_inscription) AS nombre_inscriptions
+FROM etudiants e
+LEFT JOIN inscriptions i ON e.id_etudiant = i.id_etudiant
+GROUP BY e.id_etudiant;
+
+
+8//SELECT s.nom_session,
+       SUM(CASE WHEN i.type_inscription = 'Distantiel' THEN 1 ELSE 0 END) AS inscriptions_distantielles,
+       SUM(CASE WHEN i.type_inscription = 'Presenciel' THEN 1 ELSE 0 END) AS inscriptions_presencielles
+FROM sessions s
+LEFT JOIN inscriptions i ON s.id_session = i.id_session
+GROUP BY s.id_session;
+
